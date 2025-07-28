@@ -16,25 +16,17 @@ export default function SignupPage() {
     setLoading(true)
     setError('')
 
-    try {
-      const { error: signupError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-        }
-      })
-
-      if (signupError) throw signupError
-
-      toast.success('Confirmation email sent!')
-      router.push('/auth/check-email')
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'Signup failed')
-      toast.error('Failed to sign up')
-    } finally {
-      setLoading(false)
+    const { error } = await supabase.auth.signUp({
+  email,
+  password,
+  options: {
+    emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    data: { 
+      // Optional: Add user metadata
+      full_name: 'User Name' 
     }
+  }
+});
   }
 
   return (
