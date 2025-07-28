@@ -1,19 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-module.exports = {
   async redirects() {
     return [
       {
         source: '/',
-        destination: '/dashboard', // or '/auth/login'
-        permanent: true,
+        destination: '/dashboard', // Change this to your desired default route
+        permanent: true, // HTTP 308 permanent redirect
       }
     ]
-  }
-}
+  },
+  // Keep other existing configs here
+};
 
 export default nextConfig;
