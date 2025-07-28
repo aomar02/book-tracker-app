@@ -1,37 +1,40 @@
-// src/app/auth/signup/page.tsx
+// app/auth/signup/page.tsx
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import AuthForm from '@/components/AuthForm'
+import toast from 'react-hot-toast'
 
 export default function SignupPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSignup = async (email: string, password: string) => {
     setLoading(true)
     setError('')
 
-    const formData = new FormData(e.target as HTMLFormElement)
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
+    try {
+      const { error: signupError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+        }
+      })
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
+      if (signupError) throw signupError
 
-    if (error) {
-      setError(error.message)
+      toast.success('Confirmation email sent!')
+      router.push('/auth/check-email')
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Signup failed')
+      toast.error('Failed to sign up')
+    } finally {
       setLoading(false)
-      return
     }
-
-    router.push('/dashboard')
   }
 
   return (
