@@ -1,6 +1,8 @@
 # BookTracker 📚
 Track your reading in style
 
+check out the project, [CLICK HERE!](book-tracker-app-brown.vercel.app)
+
 <img width="1287" height="511" alt="Screenshot 2025-07-28 at 1 26 34 PM" src="https://github.com/user-attachments/assets/f97c9b8c-9682-4382-bc6e-3bff509b52de" />
 
 ## Features
